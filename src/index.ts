@@ -8,6 +8,7 @@ import express, { Request, Response} from "express";
 import cors from "cors"; // CORS
 import helmet from "helmet"; // Security
 import sequelize from "./db/db_config";
+import router from "./api/routes/router";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -26,6 +27,9 @@ app.use(helmet());
 app.get("/", async (req , res) => {
   res.send("Server Working Fine !!");
 });
+
+app.use('/api',router);
+
 
 
 const main = async () => {
