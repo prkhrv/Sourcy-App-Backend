@@ -153,7 +153,7 @@ async function seedProductAttributes() {
 
 async function seedDatabase() {
   try {
-    await sequelize.sync({ force: true }); // Sync database, use force: false in production!
+    await sequelize.sync({ force: true });
     await seedProduct();
     await seedProductVariants();
     await seedProductAttributes();
