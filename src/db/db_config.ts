@@ -15,7 +15,7 @@ const sequelize = new Sequelize(database, username, password, {
   dialectOptions: {
     ssl: {
       require: true,
-      rejectUnauthorized: false, // Note: This is insecure for production
+      rejectUnauthorized: false,
     },
   },
   pool: {
