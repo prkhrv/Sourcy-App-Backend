@@ -5,9 +5,16 @@ import { WhereOptions } from "sequelize";
 import ProductAttributes from "../../db/models/ProductAttributes";
 import ProductVariants from "../../db/models/ProductVariants";
 import { getRecommendations, initializeRecommenderData } from "../service/recommendationsService";
+import { validationResult } from "express-validator";
 
 async function searchProduct(req:Request,res:Response) {
     try{
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: "Invalid Query" });
+        }
+
         const {searchTerm} = req.query;
 
         if (!searchTerm || typeof searchTerm !== "string") {
@@ -56,6 +63,12 @@ async function searchProduct(req:Request,res:Response) {
 
 async function fetchRecommendations(req:Request,res:Response) {
     try{
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ message: "Invalid Query" });
+        }
+
         const {productId} = req.query;
 
         if (!productId) {
@@ -67,7 +80,7 @@ async function fetchRecommendations(req:Request,res:Response) {
         const variants = await ProductVariants.findAll();
 
         const recommenderData = initializeRecommenderData(products,attributes,variants);
-        const recommendations = getRecommendations(Number(productId),recommenderData,0.5);
+        const recommendations = getRecommendations(Number(productId),recommenderData,0.4);
 
         res.status(200).json(recommendations);
 
